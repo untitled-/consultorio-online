@@ -1,0 +1,11 @@
+{
+  "name": "gruntjs-skeleton",
+  "version": "0.0.2",
+  "devDependencies": {
+    "qunit": "~1.x"
+  },
+  "dependencies": {
+    "jquery": "~1.x",
+	 "angular": "1.2.28"
+  }
+}
