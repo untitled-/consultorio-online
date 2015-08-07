@@ -1,0 +1,112 @@
+$border-radius: 10px;
+$border-color: grey;
+$phone-width: 768px;
+
+@mixin centered($width){
+	width:$width;
+	margin-left:(100% - $width) / 2;
+	margin-right:(100% - $width) / 2
+}
+
+@mixin bordered($color){
+	border-style: solid;
+    border-width: 1px;
+	border-color:$color;
+}
+
+.navigation{
+	@include centered(80%);
+	@include bordered($border-color);
+	height:100px;
+	margin-bottom:10px;
+}
+
+.header{
+	@include centered(80%);
+	height:100px;
+	box-sizing: border-box;
+	border-radius: $border-radius;
+	@include bordered($border-color);
+	*{
+		padding:5px;
+		box-sizing: border-box;
+		float:left;
+		height:100%;
+	}
+	.name{
+		width:80%;		
+	}
+	.control{
+		width:20%;
+	}
+}
+
+.content{
+	@include centered(80%);
+	height:auto;
+	*{
+		padding:5px;
+		box-sizing: border-box;
+	}
+	.leftColumn{
+		width:25%;
+		float:left;
+		padding-left:0px;
+		*{
+			border-radius: $border-radius;
+			@include bordered($border-color);
+			margin-bottom:5px;
+		}
+		.row1{
+			height:350px;
+		}
+		.row2{
+			height:200px;
+		}
+	}
+	.rightColumn{
+		width:75%;
+		float:left;
+		padding-left:0px;
+		*{
+			border-radius: $border-radius;
+			@include bordered($border-color);
+			margin-bottom:5px;
+		}
+		.row1{
+			height:100px;
+		}
+		.row2{
+			height:150px;
+		}
+		.row3{
+			height:150px;
+		}
+		.row4{
+			height:150px;
+		}
+	}
+}
+
+@media screen and (max-width: $phone-width) {
+	.content{
+		height:1000px;
+		*{
+			box-sizing:initial;
+			margin-bottom:10px;
+		}
+		.leftColumn{
+			padding:0px;
+			padding-top:5px;
+			width:100%;
+			float:none;
+		}
+		.rightColumn{
+			padding:0px;
+			padding-top:5px;
+			width:100%;
+			float:none;
+		}
+	}
+	
+}

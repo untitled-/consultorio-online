@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
-	var SRC_DIR = 'src/';
+	var jsVendor = [
+                'bower_components/jquery/dist/jquery.js',
+                'bower_components/angular/angular.js',
+	];
 
-	var BUILD_DIR = 'dist/';
-	var BUILD_DIR_JS = BUILD_DIR + 'js/';
-	var BUILD_DIR_CSS = BUILD_DIR + 'css/';
 	
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
@@ -16,100 +16,136 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		watch: {
-		  files: {
-			files: [ '**/html/**'],
-			tasks: ['copy'],
+		jshint: {
+			all: ['Gruntfile.js', '<%=conf.src%>**/*.js']
+		},
+		csslint: {
+		  all: {
 			options: {
-			  livereload: true,
+			  import: 2
 			},
+			src: ['<%= conf.src %>**/*.css']
+		  }
+		},
+		watch: {
+			css: {
+				files: ['<%=conf.src%>**/*.css'],
+				tasks: ['buildCSS'],
+				options: {
+					interrupt: true
+				}
+			},
+			js: {
+				files: ['<%=conf.src%>**/*.js'],
+				tasks: ['buildJS'],
+				options: {
+					interrupt: true
+				}
+			},
+			sass: {
+				files: ['<%=conf.src%>**/*.scss'],
+				tasks: ['buildSass'],
+				options: {
+					interrupt: true
+				}
+			},
+			resources: {
+				files: ['<%=conf.src%>**/*.html'],
+				tasks: ['loadconst','copy:resources','htmlmin:build'],
+				options: {
+					interrupt: true
+				}
+			},
+			vendor: {
+				files: jsVendor,
+				tasks: ['loadconst','concat:vendor'],
+				options: {
+					interrupt: true
+				}
+			}
+		},
+		clean: {
+		  build: {
+			src: ['<%=conf.dist%>']
+		  }
+		},
+		copy: {
+		  resources: {
+			cwd: '<%=conf.src%>',
+			src: [ '**', '!**/*.scss', '!**/*.js', '!**/*.css' ],
+			dest: '<%=conf.dist%>',
+			expand: true
 		  },
-		  javascript: {
-			  files: [SRC_DIR + '**/js/*.js'],
-			  tasks: ['uglify'],
-			  options: {
-				// Start a live reload server on the default port 35729
-				livereload: true,
+		  css:{
+			cwd: '<%=conf.src%>',
+			src: [ '**/*.css' ],
+			dest: '<%=conf.dist%>',
+			expand: true
+		  }
+		},
+		htmlmin: {                                     
+			build: {                                      
+			  options: {                                
+				removeComments: true,
+				collapseWhitespace: false
 			  },
-			},
-		  sass: {
-			  // We watch and compile sass files as normal but don't live reload here
-			  files: [SRC_DIR + '**/css/*.scss'],
-			  tasks: ['buildStyles'],
-			},
-		},
-		jshint : {
-			files : [ 'Gruntfile.js', 'js/main.js' ],
-			options : {
-				jshintrc : '.jshintrc',
-				globals : {
-					jQuery : true
-				}
-			}
-		},
-		clean : {
-			build : {
-				src : [ BUILD_DIR ]
-			},
-			scripts : {
-				src : [ BUILD_DIR_JS + '*.js' ]
-			}
-		},
-		copy : {
-			build : {
-				cwd : SRC_DIR,
-				src : [ '**/html/**'],
-				dest : BUILD_DIR,
-				expand : true
-			}
-		},
-		uglify : {
-			min: {
-				files: grunt.file.expandMapping(['**/*.js', '**/*.js'], BUILD_DIR_JS, {
-					rename: function(destBase, destPath) {
-						return destBase+destPath.replace('.js', '.min.js');
-					}
-				})
-			}
-		},
-		cssmin : {
-			compress : {
-				files : {
-					"temp/css/main.min.css" : [ SRC_DIR + 'acssp-core/css/*.css' ]
-				}
-			}
-		},
-		sass: {                              // Task
-			dist: {
-            options: {
-                style: 'compressed'
-            },
-            files: [{
-                expand: true,
-                cwd: SRC_DIR + 'acssp-core/css',
-                src: ['*.scss'],
-                dest: 'temp/css',
-                ext: '.css'
-            }]
-        }
-		  },
-		  concat: {
-			  css: {
-				src: ['temp/css/*.css'],
-				dest: 'dist/acssp-core/css/main.min.css'
-			  },	
-			  js: {
-				files : {
-					'dist/acssp-core/acssp-angular-core.js' : [ SRC_DIR + 'acssp-core/js/app.js',
-							SRC_DIR + 'acssp-core/js/*.js' ],
-					'dist/acssp-authentication/acssp-authentication-api.js' : [ SRC_DIR + 'acssp-authentication/js/app.js',
-							SRC_DIR + 'acssp-authentication/js/*.js' ],
-					'dist/acssp-messagecenter/acssp-messagecenter-api.js' : [ SRC_DIR + 'acssp-messagecenter/js/app.js',
-							SRC_DIR + 'acssp-messagecenter/js/*.js' ]
-				}
+			  files: {                                  
+				'<%=conf.dist%>main/index.html': '<%=conf.src%>main/index.html'
 			  }
 			}
+		},
+		sass: {
+			build: {
+				options: {
+					style: 'expanded'
+				},
+				files: [{
+					expand: true,
+					cwd: '<%=conf.src%>',
+					src: ['**/*.scss'],
+					dest: '<%=conf.dist%>',
+					ext: '.css'
+				}]
+			}
+		},
+		concat: {
+		  vendor:{
+				src : jsVendor,
+                dest : '<%=conf.dist%>main/js/vendor.js'
+		  },
+		  js: {
+			files : {
+				'<%=conf.dist%>main/js/app.js' : [  '<%=conf.src%>main/js/app.js',
+						'<%=conf.src%>main/js/*.js' ]
+			}
+		  }
+		},
+		cssmin: {
+		  target: {
+			files: [{
+			  expand: true,
+			  cwd: '<%= conf.dist %>',
+			  src: ['**/*.css', '!*.min.css'],
+			  dest: '<%= conf.dist %>',
+			  ext: '.min.css'
+			}]
+		  }
+		},
+		uglify: {
+			options : {
+				mangle : {
+					except : [ 'jQuery' ]
+				}
+			},
+			dist: {
+				files: {
+					'<%= conf.dist %>main/js/app.min.js': [ '<%=conf.dist%>main/js/app.js' ]
+				}
+			}
+		 }
+		//}
 	});
+	
 
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-concat');
@@ -120,15 +156,22 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-sass');
-	
-	grunt.registerTask('clean:temp', function () {
-		grunt.file.delete('temp');
-	});
+	grunt.loadNpmTasks('grunt-contrib-csslint');
+	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
-	grunt.registerTask('buildStyles', [ 'cssmin', 'sass', 'concat', 'clean:temp' ]);
-	grunt.registerTask('default', [ 'jshint', 'clean:build', 'copy:build',
-			'uglify', 'buildStyles' ]);
 	
-	grunt.registerTask('serve', "Serve your app", [
-                       'connect:server', 'watch' ]);
+	grunt.registerTask('loadconst', 'Load constants', function() {
+		grunt.config('conf', {
+			dist: 'dist/',
+			src: 'src/',
+		});
+	});
+	
+	grunt.registerTask('buildCSS', ['loadconst', 'csslint', 'copy:css','cssmin:target' ]);
+	grunt.registerTask('buildSass', ['loadconst', 'sass:build','cssmin:target' ]);
+	grunt.registerTask('buildJS', ['loadconst', 'jshint:all', 'concat:js','uglify' ]);
+	
+	
+	grunt.registerTask('default', ['loadconst','clean:build','concat:vendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
+	grunt.registerTask('serve', "Serve your app", ['default','connect:server', 'watch' ]);
 };
