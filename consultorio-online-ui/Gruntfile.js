@@ -1,7 +1,16 @@
 module.exports = function(grunt) {
 	var jsVendor = [
                 'bower_components/jquery/dist/jquery.js',
+				'bower_components/jquery-ui/jquery-ui.js',
                 'bower_components/angular/angular.js',
+				'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
+
+	];
+	
+	var cssVendor = [
+                'bower_components/jquery-ui/themes/base/jquery-ui.css',
+				'bower_components/bootstrap/dist/css/bootstrap.css'
+
 	];
 
 	
@@ -11,7 +20,7 @@ module.exports = function(grunt) {
 			server : {
 				options : {
 					port : 9001,
-					base : '.',
+					base : './dist/main',
 					livereload: true
 				}
 			}
@@ -81,6 +90,18 @@ module.exports = function(grunt) {
 			src: [ '**/*.css' ],
 			dest: '<%=conf.dist%>',
 			expand: true
+		  },
+		  icons:{
+			cwd: 'bower_components/bootstrap/fonts/',
+			src: [ '*' ],
+			dest: '<%=conf.dist%>/main/fonts/',
+			expand: true
+		  },
+		  maps:{
+			cwd: 'bower_components/bootstrap/dist/css/',
+			src: [ 'bootstrap.css.map' ],
+			dest: '<%=conf.dist%>/main/css/',
+			expand: true
 		  }
 		},
 		htmlmin: {                                     
@@ -112,6 +133,10 @@ module.exports = function(grunt) {
 		  vendor:{
 				src : jsVendor,
                 dest : '<%=conf.dist%>main/js/vendor.js'
+		  },
+		  cssVendor:{
+				src : cssVendor,
+                dest : '<%=conf.dist%>main/css/vendor.css'
 		  },
 		  js: {
 			files : {
@@ -170,8 +195,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('buildCSS', ['loadconst', 'csslint', 'copy:css','cssmin:target' ]);
 	grunt.registerTask('buildSass', ['loadconst', 'sass:build','cssmin:target' ]);
 	grunt.registerTask('buildJS', ['loadconst', 'jshint:all', 'concat:js','uglify' ]);
+	grunt.registerTask('buildVendor', ['loadconst', 'concat:cssVendor','concat:vendor', 'copy:icons', 'copy:maps' ]);
 	
 	
-	grunt.registerTask('default', ['loadconst','clean:build','concat:vendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
+	grunt.registerTask('default', ['loadconst','clean:build','buildVendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
 	grunt.registerTask('serve', "Serve your app", ['default','connect:server', 'watch' ]);
 };

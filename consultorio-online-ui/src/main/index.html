@@ -2,44 +2,35 @@
 <html>
 <head>
 	<!-- hellooso -->
-	<script type="text/javascript" src="js/vendor.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Consultorio en linea</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/vendor.css"></link>
 	<link rel="stylesheet" type="text/css" href="css/styles.css"></link>
+	
+	
+	
+	<script type="text/javascript" src="js/vendor.js"></script>
+	
+	<script type="text/javascript" src="js/app.js"></script>
+	
 </head>
-<body>
-	<div class="navigation">
-		Navegacion
-	</div>
-	<div class="header">
-		<div class="name">Nombre del Paciente (ESTADO: Alta/En tratamiento/Otros)</div>
-		<div class="control">Iniciar consulta</div>
-	</div>
-	<div class="content">
-		<div class="leftColumn">
-			<div class="row1">Fotografia</div>
-			<div class="row2">Ficha de identificacion</div>
+<body ng-app="main" data-ng-cloak>
+	<navigation></navigation>
+	<id-status></id-status>
+	<div class="content" >
+		<div class="leftColumn" >
+			<id-card></id-card>
 		</div>
-		<div class="rightColumn">
-			<div class="row1">
-				Próxima Cita Fecha
-			</div>
-			<div class="row2">
-				Última Cita
-				Fecha
-				Diagnóstico
-				Receta (Medicamento y Folio)
-			</div>
-			<div class="row3">
-				Antecedente Personales Patológicos
-
-			</div>
-			<div class="row4">
-				Antecedentes Heredofamiliares
-
-			</div>
+		<div class="rightColumn" >
+			<id-appointments></id-appointments>
+			<medical-history></medical-history>
+			<family-history></family-history>
 		</div>
 	</div>
 
-
+	<div class="footer">
+		<div class="footer-content">Copyright</div>
+	</div>
 </body>
 </html>
