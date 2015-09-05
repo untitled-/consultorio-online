@@ -1,3 +1,4 @@
+angular.module('main',['ui.bootstrap']);
 var app = angular.module('main');
 
  $(function() {
@@ -44,7 +45,7 @@ app.directive('navigation', function () {
     controller: 'navigationController',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: '../html/navigation.html',
+    templateUrl: 'html/navigation.html',
 	link: function($scope, element, attrs){
 
 	}
@@ -65,7 +66,7 @@ app.directive('idCard', function () {
     controller: 'idCardController',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: '../html/identification.html',
+    templateUrl: 'html/identification.html',
 	link: function($scope, element, attrs){
 
 	}
@@ -86,7 +87,7 @@ app.directive('idStatus', function () {
     controller: 'idStatusController',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: '../html/status.html',
+    templateUrl: 'html/status.html',
 	link: function($scope, element, attrs){
 
 	}
@@ -107,7 +108,7 @@ app.directive('idAppointments', function () {
     controller: 'idAppointmentsController',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: '../html/appointments.html',
+    templateUrl: 'html/appointments.html',
 	link: function($scope, element, attrs){
 
 	}
@@ -148,7 +149,7 @@ app.directive('medicalHistory', ['$window',function ($window) {
     controller: 'medicalHistoryController',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: '../html/medical-history.html',
+    templateUrl: 'html/medical-history.html',
 	link: function($scope, element, attrs){
 		var w = angular.element($window);
 				
@@ -195,7 +196,7 @@ app.directive('familyHistory', function () {
     controller: 'familyHistoryController',
     controllerAs: 'ctrl',
     bindToController: true,
-    templateUrl: '../html/family-history.html',
+    templateUrl: 'html/family-history.html',
 	link: function($scope, element, attrs){
 
 	}
@@ -206,3 +207,76 @@ app.controller('familyHistoryController',['PersonService',function(PersonService
 	var ctrl = this;
 	ctrl.person = PersonService.getPerson();
 }]);
+
+
+
+app.directive('footer', function () {
+	  return {
+	    scope: {
+	     // name: '='
+	    },
+	    controller: 'footerController',
+	    controllerAs: 'ctrl',
+	    bindToController: true,
+	    templateUrl: 'html/footer.html',
+		link: function($scope, element, attrs){
+
+		}
+	  };
+	});
+
+	app.controller('footerController',['UserService',function(UserService){
+		var ctrl = this;
+		ctrl.user = UserService.getLoggedUser();
+	}]);
+var app = angular.module('main');
+
+app.service('PersonService',function(){
+	return{
+		getPerson:function(){
+			return {
+				name:'Jane',
+				lastName:'Doe',
+				dob:'19 de Junio, 1988',
+				photoUrl:'images/face.jpg',
+				status:'En tratamiento', //Alta, En tratamiento, Otros
+				appointments:{
+					next:{
+						date:new Date()
+					},
+					previous:{
+						date:new Date(),
+						diagnostic:{
+							description:'Lorem ipsum',
+							prescription:{
+								number:'10000001',
+								drugs:[{
+									name:'Paracetamol',
+									quantity:'3 pastillas'
+								}]
+							}
+						}
+					}
+				},
+				medicalHistory:{
+					childhood:['Sarampión y bronquiectasias','Parotiditis','Rubéola'],
+					medical:['Gastritis'],
+					alergies:['Alergias inhalatorias','Alergias cutáneas','Alergias a fármacos'],
+					quirugical:['Apendicitis']
+				}
+			};
+		}
+	};
+});
+
+
+app.service('UserService',function(){
+	return{
+		getLoggedUser:function(){
+			return {
+				name: 'Pedro',
+				lastName: 'Marquez'
+			};
+		}
+	};
+});

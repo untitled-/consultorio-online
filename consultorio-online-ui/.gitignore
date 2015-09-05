@@ -1,0 +1,8 @@
+/.apt_generated/
+/.settings/
+/WebContent/
+/target/
+
+.classpath
+.factorypath
+.project

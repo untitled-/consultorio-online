@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			server : {
 				options : {
 					port : 9001,
-					base : './dist/main',
+					base : './<%= conf.dist %>',
 					livereload: true
 				}
 			}
@@ -94,13 +94,13 @@ module.exports = function(grunt) {
 		  icons:{
 			cwd: 'bower_components/bootstrap/fonts/',
 			src: [ '*' ],
-			dest: '<%=conf.dist%>/main/fonts/',
+			dest: '<%=conf.dist%>/fonts/',
 			expand: true
 		  },
 		  maps:{
 			cwd: 'bower_components/bootstrap/dist/css/',
 			src: [ 'bootstrap.css.map' ],
-			dest: '<%=conf.dist%>/main/css/',
+			dest: '<%=conf.dist%>/css/',
 			expand: true
 		  }
 		},
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
 				collapseWhitespace: false
 			  },
 			  files: {                                  
-				'<%=conf.dist%>main/index.html': '<%=conf.src%>main/index.html'
+				'<%=conf.dist%>index.html': '<%=conf.src%>index.html'
 			  }
 			}
 		},
@@ -132,16 +132,16 @@ module.exports = function(grunt) {
 		concat: {
 		  vendor:{
 				src : jsVendor,
-                dest : '<%=conf.dist%>main/js/vendor.js'
+                dest : '<%=conf.dist%>js/vendor.js'
 		  },
 		  cssVendor:{
 				src : cssVendor,
-                dest : '<%=conf.dist%>main/css/vendor.css'
+                dest : '<%=conf.dist%>css/vendor.css'
 		  },
 		  js: {
 			files : {
-				'<%=conf.dist%>main/js/app.js' : [  '<%=conf.src%>main/js/app.js',
-						'<%=conf.src%>main/js/*.js' ]
+				'<%=conf.dist%>js/app.js' : [  '<%=conf.src%>js/app.js',
+						'<%=conf.src%>js/*.js' ]
 			}
 		  }
 		},
@@ -164,7 +164,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'<%= conf.dist %>main/js/app.min.js': [ '<%=conf.dist%>main/js/app.js' ]
+					'<%= conf.dist %>js/app.min.js': [ '<%=conf.dist%>js/app.js' ]
 				}
 			}
 		 }
@@ -187,8 +187,8 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('loadconst', 'Load constants', function() {
 		grunt.config('conf', {
-			dist: 'dist/',
-			src: 'src/',
+			dist: 'src/main/webapp/',
+			src: 'src/main/ui/',
 		});
 	});
 	
@@ -198,6 +198,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('buildVendor', ['loadconst', 'concat:cssVendor','concat:vendor', 'copy:icons', 'copy:maps' ]);
 	
 	
-	grunt.registerTask('default', ['loadconst','clean:build','buildVendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
+	grunt.registerTask('default', ['loadconst','buildVendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
 	grunt.registerTask('serve', "Serve your app", ['default','connect:server', 'watch' ]);
 };

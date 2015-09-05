@@ -55,7 +55,7 @@
 		
 		<accordion-group is-open="ctrl.status.quirugical">
 		  <accordion-heading>
-			Antecedentes quirúrgicos o traumáticos<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.status.alergies, 'glyphicon-chevron-right': !ctrl.status.alergies}"></i>
+			Antecedentes quirúrgicos o traumáticos<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ctrl.status.quirugical, 'glyphicon-chevron-right': !ctrl.status.quirugical}"></i>
 		  </accordion-heading>
 			<ul>
 				<li data-ng-repeat="quirugical in ctrl.medicalHistory.quirugical" data-ng-bind="quirugical"></li>
