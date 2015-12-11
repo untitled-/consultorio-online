@@ -37,7 +37,7 @@ body {
   border-radius: 8px;
   border-style: solid;
   border-width: 1px;
-  border-color: grey;
+  border-color: gray;
   padding-bottom: 10px;
 }
 .header * {
@@ -67,7 +67,7 @@ body {
   border-radius: 8px;
   border-style: solid;
   border-width: 1px;
-  border-color: grey;
+  border-color: gray;
   min-height: 120px;
   margin-bottom: 10px;
   padding-bottom: 10px;
@@ -167,7 +167,7 @@ body {
   border-radius: 8px;
   border-style: solid;
   border-width: 1px;
-  border-color: grey;
+  border-color: gray;
   margin: 0;
   margin-bottom: 5px;
   padding: 5px;
@@ -178,7 +178,7 @@ body {
   border-radius: 8px;
   border-style: solid;
   border-width: 1px;
-  border-color: grey;
+  border-color: gray;
   margin: 0;
   margin-bottom: 5px;
   padding: 5px;
@@ -321,5 +321,3 @@ body {
     min-height: 60px;
   }
 }
-
-/*# sourceMappingURL=styles.css.map */
