@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.consultorio.core.dataaccess.repo.AddressRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/app-context.xml")
+@ContextConfiguration("/app-main-context.xml")
 @ActiveProfiles("application")
 public class AddressTest {
 

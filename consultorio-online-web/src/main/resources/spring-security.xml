@@ -6,6 +6,14 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
+		<beans:import resource="classpath:/app-context-ws.xml" />
+		
+		<beans:import resource="classpath:/app-context-config.xml" />
+	<beans:import resource="classpath*:/app-context-persistence.xml" />
+
+
+
+
 	<http auto-config="true">
 		<intercept-url pattern="/api/**" access="hasRole('ROLE_USER')" />
 	</http>
