@@ -43,13 +43,13 @@ public class PatientServiceTest {
 
 	@Test
 	public void createPatientTest() {
-		Patient result = partientService.createPatient(getTestPatient());
+		Patient result = partientService.savePatient(getTestPatient());
 		assertNotNull(result);
 	}
 	
 	@Test
 	public void getAllPatientsTest() {
-		Patient result = partientService.createPatient(getTestPatient());
+		Patient result = partientService.savePatient(getTestPatient());
 		assertNotNull(result);
 		List<Patient> patients = partientService.getAllPatients();
 		assertNotNull(patients);

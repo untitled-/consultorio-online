@@ -14,8 +14,6 @@ import com.consultorio.core.exceptions.ElementNotPersistedException;
 import com.consultorio.core.exceptions.PatientNotFoundException;
 import com.consultorio.core.services.PatientService;
 
-
-
 @Component
 @Qualifier("patientService")
 public class PatientServiceImpl implements PatientService {
@@ -35,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public Patient createPatient(Patient patient) {
+	public Patient savePatient(Patient patient) {
 		try{
 			Patient result = patientRepo.save(patient);
 			Assert.notNull(result);
@@ -48,8 +46,9 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public Patient getPatientById(Long id) {
 		try{
+			Assert.notNull(id, "Patient id is null");
 			Patient result = patientRepo.findOne(id);
-			Assert.isNull(result);
+			
 			return result;
 			
 		}catch(Exception e){
@@ -96,7 +95,13 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public void deleteAllPatients() {
-		patientRepo.deleteAll();
+		try{
+			patientRepo.deleteAll();
+			
+		}catch(Exception e){
+			throw new ElementNotPersistedException(e);
+		}
+		
 	}
 
 }

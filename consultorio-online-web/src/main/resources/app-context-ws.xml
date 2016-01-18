@@ -20,13 +20,17 @@
     
     <context:component-scan base-package="com.consultorio.webapp.ws.controller" />
 
-	<jaxrs:server id="employeeService" address="/employeeservices">
+	<jaxrs:server id="wsapi" address="/">
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
 			<bean class="com.fasterxml.jackson.jaxrs.xml.JacksonJaxbXMLProvider" />
 		</jaxrs:providers>
+		<jaxrs:outInterceptors>
+			<ref bean="hateoasInterceptor" />
+		</jaxrs:outInterceptors>
 		<jaxrs:serviceBeans>
-			<ref bean="cxfRestServiceImpl" />
+			<ref bean="patientWebServiceImpl" />
+			<ref bean="addressWebServiceImpl" />
 		</jaxrs:serviceBeans>
 		<jaxrs:extensionMappings>
 			<entry key="json" value="application/json" />
@@ -34,5 +38,22 @@
 			
 		</jaxrs:extensionMappings>
 	</jaxrs:server>
-
+	
+	<!-- 
+	<jaxrs:server id="addressService" address="/address">
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
+			<bean class="com.fasterxml.jackson.jaxrs.xml.JacksonJaxbXMLProvider" />
+			<ref bean="hateoasInterceptor" />
+		</jaxrs:providers>
+		<jaxrs:serviceBeans>
+			<ref bean="addressWebServiceImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+			
+		</jaxrs:extensionMappings>
+	</jaxrs:server>
+	 -->
 </beans>

@@ -28,7 +28,7 @@ public class RestAPIController {
 
 	@RequestMapping(value = "/patient", method = RequestMethod.GET, produces = "application/json")
 	public List<Patient> getAllPatients() {
-		patientService.createPatient(getTestPatient());
+		patientService.savePatient(getTestPatient());
 		return patientService.getAllPatients();
 	}
 	
