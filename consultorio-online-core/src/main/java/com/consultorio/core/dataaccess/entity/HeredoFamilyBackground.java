@@ -28,7 +28,7 @@ public class HeredoFamilyBackground {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable( name="disease_familybackground",
             joinColumns = @JoinColumn( name="family_background_id"),
             inverseJoinColumns = @JoinColumn( name="disease_id"))

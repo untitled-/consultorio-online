@@ -66,7 +66,7 @@ public class Patient extends BaseEntity {
 	@Column(name = "education_level")
 	private String educationLevel;
 
-	@ManyToOne(cascade=CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable( name="patient_address",
 	    joinColumns = @JoinColumn( name="patient_id"),
 	    inverseJoinColumns = @JoinColumn( name="address_id"))

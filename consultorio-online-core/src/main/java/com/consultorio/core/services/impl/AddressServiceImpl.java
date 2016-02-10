@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.consultorio.core.dataaccess.entity.Address;
-import com.consultorio.core.dataaccess.entity.Patient;
 import com.consultorio.core.dataaccess.repo.AddressRepository;
 import com.consultorio.core.exceptions.AddressNotFoundException;
 import com.consultorio.core.exceptions.ElementNotPersistedException;
@@ -23,7 +22,7 @@ public class AddressServiceImpl implements AddressService {
 	AddressRepository addressRepo;
 	
 	@Override
-	public List<Address> getAllAddresses() {
+	public List<Address> getAll() {
 		Iterable<Address> addresses = addressRepo.findAll();
 		if(addresses!=null){
 			return IteratorUtils.toList(addresses.iterator()); 
@@ -34,7 +33,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address saveAddress(Address address) {
+	public Address save(Address address) {
 		try{
 			Address result = addressRepo.save(address);
 			Assert.notNull(result);
@@ -45,7 +44,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address getAddressById(Long id) {
+	public Address getById(Long id) {
 		try{
 			Assert.notNull(id, "Address id is null");
 			Address result = addressRepo.findOne(id);
@@ -58,7 +57,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public void deleteAddressById(Long id) {
+	public void deleteById(Long id) {
 		try{
 			addressRepo.delete(id);
 			
@@ -68,7 +67,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public void deleteAddress(Address address) {
+	public void delete(Address address) {
 		try{
 			addressRepo.delete(address);
 			
@@ -78,7 +77,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public void deleteAllAddresss() {
+	public void deleteAll() {
 		try{
 			addressRepo.deleteAll();
 			
@@ -88,7 +87,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Boolean isAddressExist(Address address) {
+	public Boolean isExist(Address address) {
 		try{
 			Address result = addressRepo.findOne(address.getId());
 			if(result!=null){
