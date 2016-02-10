@@ -26,7 +26,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 
 	@PostConstruct
 	public void initIt() throws Exception {
-		patientService.savePatient(getTestPatient());
+		//patientService.save(getTestPatient());
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			Patient patient = patientService.getPatientById(Long.parseLong(patientId));
+			Patient patient = patientService.getById(Long.parseLong(patientId));
 			return Response.ok(patient).build();
 
 		} catch (Exception e) {
@@ -54,7 +54,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 
 		if (patientId != null) {
 			patient.setId(Long.parseLong(patientId));
-			Patient old = patientService.getPatientById(Long.parseLong(patientId));
+			Patient old = patientService.getById(Long.parseLong(patientId));
 			if(old == null){
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
@@ -62,7 +62,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 			patient = old;
 		}
 		LOG.info(patient.getId().toString());
-		Patient result = patientService.savePatient(patient);
+		Patient result = patientService.save(patient);
 		return Response.ok(result).status(Response.Status.CREATED).build();
 	}
 
@@ -70,7 +70,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 	public Response getPatients() {
 		try {
 			// patientService.savePatient(getTestPatient());
-			return Response.ok(patientService.getAllPatients()).build();
+			return Response.ok(patientService.getAll()).build();
 		} catch (Exception e) {
 			LOG.error("Error in the service", e);
 			return Response.status(Response.Status.NO_CONTENT).build();
@@ -109,7 +109,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			patientService.deletePatientById(Long.parseLong(patientId));
+			patientService.deleteById(Long.parseLong(patientId));
 			return Response.ok().build();
 
 		} catch (Exception e) {
@@ -126,12 +126,12 @@ public class PatientWebServiceImpl implements PatientWebService {
 		}
 
 		if (patient.getId() != null) {
-			Patient old = patientService.getPatientById(patient.getId());
+			Patient old = patientService.getById(patient.getId());
 			BeanUtils.copyProperties(patient, old);
 			patient = old;
 		}
 
-		Patient result = patientService.savePatient(patient);
+		Patient result = patientService.save(patient);
 		return Response.ok(result).status(Response.Status.CREATED).build();
 	}
 

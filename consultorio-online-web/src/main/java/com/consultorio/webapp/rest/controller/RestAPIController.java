@@ -28,8 +28,8 @@ public class RestAPIController {
 
 	@RequestMapping(value = "/patient", method = RequestMethod.GET, produces = "application/json")
 	public List<Patient> getAllPatients() {
-		patientService.savePatient(getTestPatient());
-		return patientService.getAllPatients();
+		patientService.save(getTestPatient());
+		return patientService.getAll();
 	}
 	
 	@RequestMapping(value = "/patient", method = RequestMethod.POST, produces = "application/json")

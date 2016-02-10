@@ -29,7 +29,7 @@ public class AddressWebServiceImpl implements AddressWebService {
 	@Override
 	public Response getAddresses() {
 		try {
-			return Response.ok(addressService.getAllAddresses()).build();
+			return Response.ok(addressService.getAll()).build();
 		} catch (Exception e) {
 			LOG.error("Error in the service", e);
 			return Response.status(Response.Status.NO_CONTENT).build();
@@ -43,7 +43,7 @@ public class AddressWebServiceImpl implements AddressWebService {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			Address result = addressService.getAddressById(Long.parseLong(addressId));
+			Address result = addressService.getById(Long.parseLong(addressId));
 			return Response.ok(result).build();
 
 		} catch (Exception e) {
@@ -60,12 +60,12 @@ public class AddressWebServiceImpl implements AddressWebService {
 		}
 
 		if (address.getId() != null) {
-			Address old = addressService.getAddressById(address.getId());
+			Address old = addressService.getById(address.getId());
 			BeanUtils.copyProperties(address, old);
 			address = old;
 		}
 
-		Address result = addressService.saveAddress(address);
+		Address result = addressService.save(address);
 		return Response.ok(result).status(Response.Status.CREATED).build();
 	}
 
@@ -77,7 +77,7 @@ public class AddressWebServiceImpl implements AddressWebService {
 
 		if (addressId != null) {
 			address.setId(Long.parseLong(addressId));
-			Address old = addressService.getAddressById(Long.parseLong(addressId));
+			Address old = addressService.getById(Long.parseLong(addressId));
 			if(old == null){
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
@@ -85,7 +85,7 @@ public class AddressWebServiceImpl implements AddressWebService {
 			address = old;
 		}
 		LOG.info(address.getId().toString());
-		Address result = addressService.saveAddress(address);
+		Address result = addressService.save(address);
 		return Response.ok(result).status(Response.Status.CREATED).build();
 	}
 
@@ -96,7 +96,7 @@ public class AddressWebServiceImpl implements AddressWebService {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			addressService.deleteAddressById(Long.parseLong(addressId));
+			addressService.deleteById(Long.parseLong(addressId));
 			return Response.ok().build();
 
 		} catch (Exception e) {
