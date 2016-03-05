@@ -196,6 +196,13 @@ module.exports = function(grunt) {
 			src: 'src/main/ui/',
 		});
 	});
+
+	grunt.registerTask('loadServeConst', 'Load constants', function() {
+		grunt.config('conf', {
+			dist: 'src/main/webapp/',
+			src: 'src/main/ui/',
+		});
+	});
 	
 	grunt.registerTask('buildCSS', ['loadconst', 'csslint', 'copy:css','cssmin:target' ]);
 	grunt.registerTask('buildSass', ['loadconst', 'sass:build','cssmin:target' ]);

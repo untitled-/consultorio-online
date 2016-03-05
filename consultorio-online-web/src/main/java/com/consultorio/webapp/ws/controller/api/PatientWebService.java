@@ -35,6 +35,11 @@ public interface PatientWebService
 	@Path("/{id}")
 	public Response getPatient(@PathParam("id") String patientId);
 	
+	@GET
+	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	@Path("/{id}/familyBackground")
+	public Response getPatientFamilyBackground(@PathParam("id") String patientId);
+	
 	
 	@POST
 	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})

@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import com.consultorio.core.dataaccess.entity.Address;
 import com.consultorio.core.dataaccess.entity.Patient;
 import com.consultorio.core.dataaccess.repo.PatientRepository;
+import com.consultorio.core.exceptions.ElementNotFoundException;
 import com.consultorio.core.exceptions.ElementNotPersistedException;
 import com.consultorio.core.exceptions.PatientNotFoundException;
 import com.consultorio.core.services.AddressService;
@@ -38,14 +39,32 @@ public class PatientServiceImpl implements PatientService {
 		}
 	}
 
+	/**
+	 * This method saves a new patient. It follows these rules for the related
+	 * entities:
+	 * 
+	 * Expected values for Address
+	 * <ul>
+	 * <li>-A null address -A non-null address, which will be created if it has
+	 * no ID set</li>
+	 * <li>-A non-null address, which will be updated if it has an ID set</li>
+	 * <li>-A non-null address with empty properties but not null ID. The
+	 * address is retrieved and attached to the patient</li>
+	 * </ul>
+	 */
 	@Override
 	public Patient save(Patient patient) {
-		try {
-			Address address = patient.getAddress();
-			if(address!=null){
-				address = addressService.save(address);	
+		Address address = patient.getAddress();
+		if (address != null) {
+			if (address.getId() != null) {
+				address = addressService.getById(address.getId());
+				if (address == null) {
+					throw new ElementNotFoundException("The address doesn't exist");
+				}
 			}
-
+			address = addressService.save(address);
+		}
+		try {
 			patient.setAddress(address);
 			Patient result = patientRepo.save(patient);
 			Assert.notNull(result);

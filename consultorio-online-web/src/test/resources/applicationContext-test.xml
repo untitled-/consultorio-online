@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs-client"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd     
+        http://cxf.apache.org/jaxrs-client
+	 	http://cxf.apache.org/schemas/jaxrs-client.xsd
+	 	http://cxf.apache.org/jaxws
+	 	http://cxf.apache.org/schemas/jaxws.xsd ">
+	 	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/test.properties" />
+	</bean>
+	<!-- <import resource="classpath:META-INF/cxf/cxf-extension-http-jetty.xml" />
+	 -->
+	<import resource="classpath*:/app-context.xml" />
+	<jaxrs:client id="patientWebService" 
+		address="${server.address}"
+		serviceClass="com.consultorio.webapp.ws.controller.api.PatientWebService">
+		<jaxrs:headers>
+			<entry key="Accept" value="application/json"></entry>
+		</jaxrs:headers>
+	</jaxrs:client>
+
+
+</beans>

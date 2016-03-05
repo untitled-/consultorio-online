@@ -135,4 +135,21 @@ public class PatientWebServiceImpl implements PatientWebService {
 		return Response.ok(result).status(Response.Status.CREATED).build();
 	}
 
+	@Override
+	public Response getPatientFamilyBackground(String patientId) {
+		try {
+			if (patientId == null) {
+				return Response.status(Response.Status.BAD_REQUEST).build();
+			}
+
+			Patient patient = patientService.getById(Long.parseLong(patientId));
+			HeredoFamilyBackground background = patient.getHereditaryFamilyBackground();
+			return Response.ok(background).build();
+
+		} catch (Exception e) {
+			LOG.error("Error in the service", e);
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+	}
+
 }
