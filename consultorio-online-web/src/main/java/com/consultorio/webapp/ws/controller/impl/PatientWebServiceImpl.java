@@ -1,5 +1,12 @@
 package com.consultorio.webapp.ws.controller.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response;
 
@@ -10,11 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.consultorio.core.dataaccess.entity.Address;
+import com.consultorio.core.dataaccess.entity.Consultation;
 import com.consultorio.core.dataaccess.entity.Disease;
 import com.consultorio.core.dataaccess.entity.Gender;
 import com.consultorio.core.dataaccess.entity.HeredoFamilyBackground;
 import com.consultorio.core.dataaccess.entity.Patient;
 import com.consultorio.core.services.PatientService;
+import com.consultorio.webapp.beans.PatientSummary;
 import com.consultorio.webapp.ws.controller.api.PatientWebService;
 
 @Component
@@ -26,7 +35,7 @@ public class PatientWebServiceImpl implements PatientWebService {
 
 	@PostConstruct
 	public void initIt() throws Exception {
-		//patientService.save(getTestPatient());
+		patientService.save(getTestPatient());
 	}
 
 	@Override
@@ -70,14 +79,20 @@ public class PatientWebServiceImpl implements PatientWebService {
 	public Response getPatients() {
 		try {
 			// patientService.savePatient(getTestPatient());
-			return Response.ok(patientService.getAll()).build();
+			return Response.ok(convertPatientListToSummaryList(patientService.getAll())).build();
 		} catch (Exception e) {
 			LOG.error("Error in the service", e);
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
 	}
 
-	private Patient getTestPatient() {
+	private Consultation getTestConsultation(Date date){
+		Consultation consult = new Consultation();
+		consult.setDate(date);
+		return consult;
+	}
+	
+	private Patient getTestPatient() throws ParseException {
 
 		Address address = new Address();
 		address.setStreet("4701 Staggerbrush Rd");
@@ -93,13 +108,34 @@ public class PatientWebServiceImpl implements PatientWebService {
 		patient.setFirstName("Pedro" + System.currentTimeMillis());
 		patient.setGender(Gender.MALE);
 		patient.setAddress(address);
+		
+		String startDateString = "2013-03-26"; 
+		String futureDate = "2099-03-26"; 
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				
+		patient.addConsultation(getTestConsultation(df.parse(startDateString)));
+		patient.addConsultation(getTestConsultation(df.parse(futureDate)));
 
 		HeredoFamilyBackground familyBackground = new HeredoFamilyBackground();
-		familyBackground.addDisease(disease);
+		familyBackground.addDisease(null);
 
 		patient.setHereditaryFamilyBackground(familyBackground);
 
 		return patient;
+	}
+	
+	public List<PatientSummary> convertPatientListToSummaryList(List<Patient> patients){
+		List<PatientSummary> summary = new ArrayList<PatientSummary>();
+		for(Patient patient : patients){
+			PatientSummary s = new PatientSummary();
+			s.setId(patient.getId());
+			s.setFirstName(patient.getFirstName());
+			s.setLastName(patient.getLastName());
+			s.setLastConsultation(patientService.getLastConsultation(patient.getId()).getDate());
+			s.setNextConsultation(patientService.getNextConsultation(patient.getId()).getDate());
+			summary.add(s);
+		}
+		return summary;
 	}
 
 	@Override

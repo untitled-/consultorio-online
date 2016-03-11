@@ -21,6 +21,22 @@ module.exports = function(grunt) {
 	
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
+		env:{
+			dev:{
+				'conf': {
+					dist: 'src/test/webapp/',
+					src: 'src/main/ui/',
+					configJS:'src/main/ui/config/dev.js'
+				}
+			},
+			production:{
+				'conf': {
+					dist: 'src/main/webapp/',
+					src: 'src/main/ui/',
+					configJS:'src/main/ui/config/production.js'
+				}
+			}
+		},
 		connect : {
 			server : {
 				options : {
@@ -65,14 +81,14 @@ module.exports = function(grunt) {
 			},
 			resources: {
 				files: ['<%=conf.src%>**/*.html'],
-				tasks: ['loadconst','copy:resources','htmlmin:build'],
+				tasks: ['copy:resources','htmlmin:build'],
 				options: {
 					interrupt: true
 				}
 			},
 			vendor: {
 				files: jsVendor,
-				tasks: ['loadconst','concat:vendor'],
+				tasks: ['concat:vendor'],
 				options: {
 					interrupt: true
 				}
@@ -86,7 +102,7 @@ module.exports = function(grunt) {
 		copy: {
 		  resources: {
 			cwd: '<%=conf.src%>',
-			src: [ '**', '!**/*.scss', '!**/*.js', '!**/*.css' ],
+			src: [ '**', '!**/*.scss', '!**/*.js', '!**/*.css', '!ajax/**', '!config/**' ],
 			dest: '<%=conf.dist%>',
 			expand: true
 		  },
@@ -146,7 +162,8 @@ module.exports = function(grunt) {
 		  js: {
 			files : {
 				'<%=conf.dist%>js/app.js' : [  '<%=conf.src%>js/app.js',
-						'<%=conf.src%>js/*.js' ]
+						'<%=conf.src%>js/*.js' ],
+				'<%=conf.dist%>config.js' : '<%=conf.configJS%>'
 			}
 		  }
 		},
@@ -189,27 +206,18 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
-	
-	grunt.registerTask('loadconst', 'Load constants', function() {
-		grunt.config('conf', {
-			dist: 'src/main/webapp/',
-			src: 'src/main/ui/',
-		});
+
+	grunt.registerMultiTask('env', 'Set environment', function(){
+		grunt.config('conf',this.data.conf);
 	});
 
-	grunt.registerTask('loadServeConst', 'Load constants', function() {
-		grunt.config('conf', {
-			dist: 'src/main/webapp/',
-			src: 'src/main/ui/',
-		});
-	});
-	
-	grunt.registerTask('buildCSS', ['loadconst', 'csslint', 'copy:css','cssmin:target' ]);
-	grunt.registerTask('buildSass', ['loadconst', 'sass:build','cssmin:target' ]);
-	grunt.registerTask('buildJS', ['loadconst', 'jshint:all', 'concat:js','uglify' ]);
-	grunt.registerTask('buildVendor', ['loadconst', 'concat:cssVendor','concat:vendor', 'copy:icons', 'copy:maps' ]);
+	grunt.registerTask('buildCSS', [ 'csslint', 'copy:css','cssmin:target' ]);
+	grunt.registerTask('buildSass', ['sass:build','cssmin:target' ]);
+	grunt.registerTask('buildJS', ['jshint:all', 'concat:js','uglify' ]);
+	grunt.registerTask('buildVendor', ['concat:cssVendor','concat:vendor', 'copy:icons', 'copy:maps' ]);
 	
 	
-	grunt.registerTask('default', ['loadconst','buildVendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
-	grunt.registerTask('serve', "Serve your app", ['default','connect:server', 'watch' ]);
+	grunt.registerTask('build', ['env:dev','clean','buildVendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
+	grunt.registerTask('default', ['env:production','buildVendor','copy:resources','htmlmin:build','buildSass','buildCSS','buildJS']);
+	grunt.registerTask('serve', "Serve your app", ['build','connect:server', 'watch' ]);
 };

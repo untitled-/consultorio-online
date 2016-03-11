@@ -10,8 +10,8 @@
 	<tbody>
 		<tr ng-repeat="user in ctrl.users" ui-sref="patientDetail">
 			<td>{{user.firstName}} {{user.lastName}}</td>
-			<td></td>
-			<td></td>
+			<td>{{user.lastConsultation | date}}</td>
+			<td>{{user.nextConsultation | date}}</td>
 		</tr>
 	</tbody>
 </table>

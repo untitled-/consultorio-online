@@ -1,4 +1,4 @@
-var app = angular.module('main',['ui.bootstrap','formly', 'formlyBootstrap','ui.router']);
+var app = angular.module('main',['config-module','ui.bootstrap','formly', 'formlyBootstrap','ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //

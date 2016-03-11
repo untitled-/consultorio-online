@@ -5,6 +5,8 @@ package com.consultorio.webapp.ws.controller.impl;
 
 import javax.ws.rs.core.Response;
 
+import org.springframework.stereotype.Component;
+
 import com.consultorio.core.dataaccess.entity.HeredoFamilyBackground;
 import com.consultorio.webapp.ws.controller.api.FamilyBackgroundWebService;
 
@@ -12,6 +14,7 @@ import com.consultorio.webapp.ws.controller.api.FamilyBackgroundWebService;
  * @author Pedro
  *
  */
+@Component
 public class FamilyBackgroundWebServiceImpl implements FamilyBackgroundWebService {
 
 	/* (non-Javadoc)

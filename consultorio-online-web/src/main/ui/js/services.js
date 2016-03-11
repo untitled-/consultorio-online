@@ -1,9 +1,9 @@
 var app = angular.module('main');
 
-app.service('PatientService',['$http',function($http){
+app.service('PatientService',['$http','restApi',function($http, restApi){
 	return{
 		getPromiseAllPatients:function(handler,errorHandler){
-			  var responsePromise = $http.get("users.json");
+			  var responsePromise = $http.get(restApi.getPatients);
               return responsePromise;
 		},
 		getPerson:function(){

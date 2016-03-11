@@ -107,6 +107,19 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>pl.allegro</groupId>
+				<artifactId>grunt-maven-plugin</artifactId>
+				<version>1.4.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>npm</goal>
+							<goal>grunt</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.2.11.v20150529</version>
@@ -118,6 +131,32 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>pl.allegro</groupId>
+					<artifactId>grunt-maven-plugin</artifactId>
+					<version>1.5.0</version>
+					<configuration>
+						<gruntOptions>
+				            <gruntOption>--verbose</gruntOption>
+				        </gruntOptions>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>create-resources</goal>
+								<goal>npm</goal>
+								<!-- or npm-offline if npm failure is not an option -->
+								<goal>grunt</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>

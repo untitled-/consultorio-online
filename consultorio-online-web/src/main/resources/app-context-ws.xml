@@ -17,7 +17,7 @@
 	<import resource="classpath*:META-INF/cxf/cxf.xml" />
 	<import resource="classpath*:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 	<import resource="classpath*:META-INF/cxf/cxf-servlet.xml" />
-
+	
 	<context:component-scan base-package="com.consultorio.webapp.ws.controller" />
 
 	<jaxrs:server id="wsapi" address="/">
@@ -32,7 +32,7 @@
 			<ref bean="patientWebServiceImpl" />
 			<ref bean="addressWebServiceImpl" />
 			<ref bean="diseaseWebServiceImpl" />
-			<ref bean="familyBackgroundWebService" />
+			<ref bean="familyBackgroundWebServiceImpl" />
 		</jaxrs:serviceBeans>
 		<jaxrs:extensionMappings>
 			<entry key="json" value="application/json" />

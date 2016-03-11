@@ -5,6 +5,8 @@ package com.consultorio.webapp.ws.controller.impl;
 
 import javax.ws.rs.core.Response;
 
+import org.springframework.stereotype.Component;
+
 import com.consultorio.core.dataaccess.entity.Address;
 import com.consultorio.webapp.ws.controller.api.AddressWebService;
 
@@ -12,6 +14,7 @@ import com.consultorio.webapp.ws.controller.api.AddressWebService;
  * @author Pedro
  *
  */
+@Component
 public class DiseaseWebServiceImpl implements AddressWebService {
 
 	/* (non-Javadoc)
